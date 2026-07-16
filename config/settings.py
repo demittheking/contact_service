@@ -186,3 +186,13 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+
+# ========== ДЛЯ ДЕПЛОЯ ==========
+
+# Static files для Render
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Middleware для статики
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
