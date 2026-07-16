@@ -70,7 +70,7 @@ bash
 python manage.py runserver
 Сервер будет доступен по адресу: http://127.0.0.1:8000
 
-### 🛠 Стек технологий
+### Стек технологий
 #### Backend
 Язык: Python 3.10+
 
@@ -97,32 +97,59 @@ SQLite — для миграций Django (можно заменить на Post
 #### Дополнительно
 SMTP — отправка email-уведомлений через Django EmailBackend
 
-### Архитектура
-Проект построен на слоистой архитектуре с разделением ответственности:
+##Тестирование
+Через Swagger
+После запуска сервера открой в браузере:
 
+Swagger UI: http://localhost:8000/swagger/
+
+ReDoc: http://localhost:8000/redoc/
+
+Через curl
+
+curl -X POST http://localhost:8000/api/contact \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Dmitrii Karasyov",
+    "phone": "+79040731166",
+    "email": "dkarasev42@gmail.com",
+    "comment": "Здравствуйте! Хочу заказать сайт"
+  }'
+## Деплой
+Проект задеплоен на Render.com:
+
+Ссылка: https://contact-service-.onrender.com
+
+## Структура проекта
+text
 contact_service/
-├── config/                  # Настройки проекта
-│   ├── settings.py          # Конфигурация Django
-│   └── urls.py              # Корневые маршруты
-│
-├── apps/                    # Все приложения
-│   ├── api/                 # Презентационный слой (Controllers)
-│   │   ├── views.py         # Обработка HTTP-запросов
-│   │   ├── serializers.py   # Валидация и сериализация
-│   │   └── urls.py          # Маршруты API
-│   │
-│   ├── services/            # Бизнес-логика (Services)
-│   │   ├── ai_service.py    # AI-интеграция
-│   │   └── email_service.py # Отправка писем
-│   │
-│   └── core/                # Инфраструктурный слой
-│       ├── decorators.py    # Rate limiting
-│       ├── exceptions.py    # Глобальный error handler
-│       └── middleware.py    # Логирование запросов
-│
-├── logs/                    # Логи запросов
-├── data/                    # Данные rate limiting
-└── .env                     # Переменные окружения
+├── apps/
+│   ├── api/
+│   │   ├── __init__.py
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── ai_service.py
+│   │   └── email_service.py
+│   └── core/
+│       ├── __init__.py
+│       ├── decorators.py
+│       ├── exceptions.py
+│       └── middleware.py
+├── config/
+│   ├── settings.py
+│   └── urls.py
+├── data/
+│   └── rate_limits.json
+├── logs/
+│   └── app.log
+├── .env
+├── .gitignore
+├── manage.py
+├── README.md
+└── requirements.txt
 
 ### Паттерны проектирования
 Controller-Service — разделение логики обработки запросов и бизнес-логики
@@ -218,7 +245,7 @@ comment — минимум 1 символ, максимум 1000
 
 500 — внутренняя ошибка сервера (логируется)
 
-### AI-интеграция
+## AI-интеграция
 Используемые AI-инструменты
 OpenAI API (ChatGPT)
 
@@ -226,19 +253,19 @@ OpenAI API (ChatGPT)
 
 Генерация ответа — автоматическое создание персонализированного ответа на обращение
 
-### Промпты
-# Для анализа тональности:
+#### Промпты
+##### Для анализа тональности:
 
 Ты анализируешь тональность комментария. 
 Ответь строго одним словом: positive, negative или neutral.
-# Для генерации ответа:
+##### Для генерации ответа:
 
 Ты - менеджер по продажам. Ответь вежливо и предложи помощь. 
 Ответ должен быть кратким (2-3 предложения).
-Graceful Fallback
+####Graceful Fallback
 Если OpenAI API недоступен (ошибка сети, отсутствие ключа, региональные ограничения), сервис автоматически переключается на встроенный алгоритм:
 
-### Fallback-анализ тональности:
+#### Fallback-анализ тональности:
 
 Использует словари позитивных и негативных слов
 
@@ -329,4 +356,9 @@ json
 MIT License — свободное использование в любых целях.
 
 # Контакты
-По вопросам работы сервиса: dkarasev42@gmail.com
+
+GitHub: https://github.com/demittheking
+
+Telegram: @demitthekingaccount
+
+Email: dkarasev42@gmail.com
