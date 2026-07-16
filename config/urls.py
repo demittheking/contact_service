@@ -1,18 +1,13 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.http import JsonResponse
-
-def home(request):
-    return JsonResponse({
-        "message": "Contact Service API",
-        "endpoints": {
-            "POST /api/contact": "Отправка сообщения"
-        },
-        "docs": "Смотри README.md"
-    })
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 urlpatterns = [
-    path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
+    
+    # Swagger документация
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]

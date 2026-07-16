@@ -3,6 +3,7 @@ import uuid
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 from .serializers import ContactSerializer
 from apps.services.email_service import email_service
@@ -13,6 +14,31 @@ from django.conf import settings
 logger = logging.getLogger(__name__)
 
 class ContactView(APIView):
+    @extend_schema(
+        request=ContactSerializer,
+        responses={
+            201: OpenApiResponse(
+                description='Успешно отправлено',
+                response={
+                    'type': 'object',
+                    'properties': {
+                        'status': {'type': 'string'},
+                        'request_id': {'type': 'string'},
+                        'message': {'type': 'string'},
+                        'sentiment': {'type': 'string'},
+                        'auto_reply': {'type': 'string', 'nullable': True},
+                    }
+                }
+            ),
+            400: OpenApiResponse(description='Ошибка валидации'),
+            429: OpenApiResponse(description='Слишком много запросов'),
+            500: OpenApiResponse(description='Внутренняя ошибка'),
+        }
+    )
+    @rate_limit(
+        requests_limit=settings.RATE_LIMIT_REQUESTS,
+        period=settings.RATE_LIMIT_PERIOD
+    )
     def post(self, request):
         serializer = ContactSerializer(data=request.data)
         if not serializer.is_valid():

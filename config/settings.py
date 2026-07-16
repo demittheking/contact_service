@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     
     # Third-party
     'rest_framework',
-    # 'drf_spectacular',
+    'drf_spectacular',
     'corsheaders',
     
     # Local apps
@@ -167,3 +167,22 @@ RATE_LIMIT_PERIOD = int(os.getenv('RATE_LIMIT_PERIOD', 60))
 
 # ========== OPENAI ==========
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
+
+# ========== DRF Spectacular (Swagger) ==========
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+    'EXCEPTION_HANDLER': 'core.exceptions.custom_exception_handler',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Contact Service API',
+    'DESCRIPTION': 'API для контактной формы с AI-интеграцией для лендинга разработчика',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
