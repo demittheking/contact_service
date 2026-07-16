@@ -118,7 +118,7 @@ curl -X POST http://localhost:8000/api/contact \
 ## Деплой
 Проект задеплоен на Render.com:
 
-Ссылка: https://contact-service-.onrender.com
+Ссылка: [https://contact-service-.onrender.com](https://contact-service-atot.onrender.com)
 
 ## Структура проекта
 text
