@@ -19,6 +19,7 @@ Backend-сервис для обработки обратной связи с л
 
 ### 1. Клонирование репозитория
 git clone https://github.com/ваш-username/contact-service.git
+
 cd contact-service
 
 ### 2. Настройка виртуального окружения
@@ -27,9 +28,13 @@ bash
 python -m venv venv
 
 #### Активируем
+
 Windows:
+
 venv\Scripts\activate
+
 Mac/Linux:
+
 source venv/bin/activate
 ### 3. Установка зависимостей
 
@@ -40,7 +45,9 @@ pip install -r requirements.txt
 
 #### Django
 SECRET_KEY=ваш-секретный-ключ
+
 DEBUG=True
+
 ALLOWED_HOSTS=localhost,127.0.0.1
 
 #### OpenAI API (оставить пустым, если нет ключа)
@@ -48,26 +55,33 @@ OPENAI_API_KEY=
 
 #### Email (настройте для отправки писем)
 EMAIL_HOST=smtp.gmail.com
+
 EMAIL_PORT=587
+
 EMAIL_USE_TLS=True
+
 EMAIL_HOST_USER=your-email@gmail.com
+
 EMAIL_HOST_PASSWORD=your-app-password
+
 DEFAULT_FROM_EMAIL=your-email@gmail.com
 
 #### Rate Limiting
 RATE_LIMIT_REQUESTS=5
+
 RATE_LIMIT_PERIOD=60
 
 #### CORS
 CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8000
 
 ### 5. Применение миграций
-bash
+
 python manage.py migrate
 
 ### 6. Запуск сервера
-bash
+
 python manage.py runserver
+
 Сервер будет доступен по адресу: http://127.0.0.1:8000
 
 ### Стек технологий
@@ -99,6 +113,7 @@ SMTP — отправка email-уведомлений через Django EmailBa
 
 ##Тестирование
 Через Swagger
+
 После запуска сервера открой в браузере:
 
 Swagger UI: http://localhost:8000/swagger/
@@ -181,8 +196,11 @@ OpenAI — простой и мощный API для AI-функций
 Базовый URL
 
 http://localhost:8000/api/
+
 Эндпоинты
+
 POST /api/contact
+
 Отправка сообщения через контактную форму.
 
 Заголовки:
@@ -247,6 +265,7 @@ comment — минимум 1 символ, максимум 1000
 
 ## AI-интеграция
 Используемые AI-инструменты
+
 OpenAI API (ChatGPT)
 
 Анализ тональности — определение эмоциональной окраски комментария (positive/negative/neutral)
@@ -257,10 +276,12 @@ OpenAI API (ChatGPT)
 ##### Для анализа тональности:
 
 Ты анализируешь тональность комментария. 
+
 Ответь строго одним словом: positive, negative или neutral.
 ##### Для генерации ответа:
 
 Ты - менеджер по продажам. Ответь вежливо и предложи помощь. 
+
 Ответ должен быть кратким (2-3 предложения).
 ####Graceful Fallback
 Если OpenAI API недоступен (ошибка сети, отсутствие ключа, региональные ограничения), сервис автоматически переключается на встроенный алгоритм:
